@@ -6,10 +6,10 @@ metadata:
   labels:
     {{- include "batch-processing.labels" . | nindent 4 }}
 spec:
+  serviceName: "batch-processing"
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
-  serviceName: "batch-processing"
   selector:
     matchLabels:
       {{- include "batch-processing.selectorLabels" . | nindent 6 }}
@@ -20,6 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        app: batch-processing
         {{- include "batch-processing.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -48,13 +49,14 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - "pod"
-          - "-lapp=cloud-info"
+          - "-lapp=ce-cloud-info"
       - name: wait-for-anomaly-detection
         image: {{ include "common.images.image" (dict "imageRoot" .Values.waitForInitContainer.image "global" .Values.global) }}
         imagePullPolicy: IfNotPresent
         args:
           - "pod"
-          - "-lapp=anomaly-detection"
+          - "-lapp=ce-anomaly-detection"
+      terminationGracePeriodSeconds: 30
       containers:
         - name: batch-processing
           securityContext:
@@ -64,8 +66,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: batch-processing
+            - secretRef:
+                name: batch-processing
           env:
-            - name: MONGODB_USER
+            - name: MONGODB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.mongoSecrets.userName.name }}
@@ -75,7 +79,9 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.mongoSecrets.password.name }}
                   key: {{ .Values.mongoSecrets.password.key }}
-            - name: EVENTS_MONGO_DB_URL
+            - name: MONGO_URI
+              value: {{ include "harnesscommon.database.mongo" (dict "database" "harness" "context" $) }}
+            - name: EVENTS_MONGO_URI
               value: {{ include "harnesscommon.database.mongo" (dict "database" "events" "context" $) }}
             - name : TIMESCALEDB_PASSWORD
               valueFrom:
@@ -88,6 +94,20 @@ spec:
               value: 'jdbc:postgresql://timescaledb-single-chart.{{ .Release.Namespace }}:5432/harness'
             - name: POD_NAME
               value: batch-processing
+          volumeMounts:
+          - name: secret-mount
+            mountPath: /opt/harness/svc
+      volumes:
+      - name: secret-mount
+        secret:
+          secretName: batch-processing-secret-mount
+          items:
+          - key: ce-batch-gcp-credentials
+            path: ce_batch_gcp_credentials.json
+          - key: ce-gcp-home-project-creds
+            path: ce-gcp-home-project-creds.json
+          - key: cloud-data-store
+            path: cloud_data_store.json
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

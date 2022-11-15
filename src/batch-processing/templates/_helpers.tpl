@@ -70,3 +70,14 @@ Create the name of the service account to use
 - { name: APP_DATABASE_DATASOURCE, value: "{{ printf "postgres://postgres:$(DB_PASSWORD)@postgres:5432" }}" }
 - { name: APP_DB_MIGRATION_DATASOURCE, value: "{{ printf "postgres://postgres:$(DB_PASSWORD)@postgres:5432" }}" }
 {{- end }}
+
+{{- define "batch-processing.generateSecrets" }}
+    S3_SYNC_CONFIG_ACCESSKEY: {{ include "common.secrets.passwords.manage" (dict "secret" "batch-processing" "key" "S3_SYNC_CONFIG_ACCESSKEY" "providedValues" (list "awsSecret.S3_SYNC_CONFIG_ACCESSKEY") "length" 10 "context" $) }}
+    S3_SYNC_CONFIG_SECRETKEY: {{ include "common.secrets.passwords.manage" (dict "secret" "batch-processing" "key" "S3_SYNC_CONFIG_SECRETKEY" "providedValues" (list "awsSecret.S3_SYNC_CONFIG_SECRETKEY") "length" 10 "context" $) }}
+{{- end }}
+
+{{- define "batch-processing.generateMountSecrets" }}
+    ce-batch-gcp-credentials: {{ include "common.secrets.passwords.manage" (dict "secret" "batch-processing-secret-mount" "key" "ce-batch-gcp-credentials" "providedValues" (list "ceBatchGCPCredentials") "length" 10 "context" $) }}
+    ce-gcp-home-project-creds: {{ include "common.secrets.passwords.manage" (dict "secret" "batch-processing-secret-mount" "key" "ce-gcp-home-project-creds" "providedValues" (list "ceGCPHomeProjectCreds") "length" 10 "context" $) }}
+    cloud-data-store: {{ include "common.secrets.passwords.manage" (dict "secret" "batch-processing-secret-mount" "key" "cloud-data-store" "providedValues" (list "storageObjectAdmin") "length" 10 "context" $) }}
+{{- end }}
