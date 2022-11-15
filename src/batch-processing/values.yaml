@@ -14,20 +14,18 @@ global:
 
 replicaCount: 2
 
-maxSurge: 100%
-
-maxUnavailable: 0
+isolatedReplica: 2
 
 java:
-  memory: "4096m"
-  memoryLimit: "4096m"
+  memory: "7168m"
+  memoryLimit: "7168m"
 
 image:
   registry: docker.io
-  repository: harness/ce-nextgen-signed
+  repository: harness/batch-processing-signed
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "77300"
+  tag: "77500"
   digest: ""
 
 waitForInitContainer:
@@ -51,6 +49,16 @@ timescaleSecret:
     name: harness-secrets
     key: timescaledbPostgresPassword
 
+ceBatchGCPCredentials: ""
+
+ceGCPHomeProjectCreds: ""
+
+storageObjectAdmin: ""
+
+awsSecret:
+  S3_SYNC_CONFIG_ACCESSKEY: ""
+  S3_SYNC_CONFIG_SECRETKEY: ""
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -69,9 +77,6 @@ service:
   type: ClusterIP
   port: 6340
 
-ingress:
-  className: nginx
-
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -85,14 +90,14 @@ tolerations: []
 
 affinity: {}
 
-CE_AWS_TEMPLATE_URL: dummy
+uiServerUrl: "https://app.harness.io"
 
-DEFAULT_NG_NAMESPACE: 
+GCP_PROJECT_ID: "placeHolder"
 
 resources:
   limits:
-    cpu: 2
-    memory: "5120Mi"
+    cpu: 1
+    memory: "8192Mi"
   requests:
-    cpu: 2
-    memory: "5120Mi"
+    cpu: 1
+    memory: "8192Mi"

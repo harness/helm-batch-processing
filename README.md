@@ -1,6 +1,6 @@
 # batch-processing
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.773.0](https://img.shields.io/badge/AppVersion-1.773.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.773.0](https://img.shields.io/badge/AppVersion-1.773.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -8,19 +8,23 @@ A Helm chart for Kubernetes
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.bitnami.com/bitnami | common | 2.x.x |
 | https://harness.github.io/helm-common | harness-common | 1.x.x |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| CE_AWS_TEMPLATE_URL | string | `"dummy"` |  |
-| DEFAULT_NG_NAMESPACE | string | `nil` |  |
+| GCP_PROJECT_ID | string | `"placeHolder"` |  |
 | affinity | object | `{}` |  |
 | autoscaling.enabled | bool | `false` |  |
 | autoscaling.maxReplicas | int | `2` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| awsSecret.S3_SYNC_CONFIG_ACCESSKEY | string | `""` |  |
+| awsSecret.S3_SYNC_CONFIG_SECRETKEY | string | `""` |  |
+| ceBatchGCPCredentials | string | `""` |  |
+| ceGCPHomeProjectCreds | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | global.ingress.className | string | `"harness"` |  |
 | global.ingress.enabled | bool | `false` |  |
@@ -31,13 +35,11 @@ A Helm chart for Kubernetes
 | image.digest | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.registry | string | `"docker.io"` |  |
-| image.repository | string | `"harness/ce-nextgen-signed"` |  |
-| image.tag | string | `"77300"` |  |
-| ingress.className | string | `"nginx"` |  |
-| java.memory | string | `"4096m"` |  |
-| java.memoryLimit | string | `"4096m"` |  |
-| maxSurge | string | `"100%"` |  |
-| maxUnavailable | int | `0` |  |
+| image.repository | string | `"harness/batch-processing-signed"` |  |
+| image.tag | string | `"77500"` |  |
+| isolatedReplica | int | `2` |  |
+| java.memory | string | `"7168m"` |  |
+| java.memoryLimit | string | `"7168m"` |  |
 | mongoSecrets.password.key | string | `"mongodb-root-password"` |  |
 | mongoSecrets.password.name | string | `"mongodb-replicaset-chart"` |  |
 | mongoSecrets.userName.key | string | `"mongodbUsername"` |  |
@@ -47,19 +49,21 @@ A Helm chart for Kubernetes
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | replicaCount | int | `2` |  |
-| resources.limits.cpu | int | `2` |  |
-| resources.limits.memory | string | `"5120Mi"` |  |
-| resources.requests.cpu | int | `2` |  |
-| resources.requests.memory | string | `"5120Mi"` |  |
+| resources.limits.cpu | int | `1` |  |
+| resources.limits.memory | string | `"8192Mi"` |  |
+| resources.requests.cpu | int | `1` |  |
+| resources.requests.memory | string | `"8192Mi"` |  |
 | securityContext | object | `{}` |  |
 | service.port | int | `6340` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `false` |  |
 | serviceAccount.name | string | `"harness-default"` |  |
+| storageObjectAdmin | string | `""` |  |
 | timescaleSecret.password.key | string | `"timescaledbPostgresPassword"` |  |
 | timescaleSecret.password.name | string | `"harness-secrets"` |  |
 | tolerations | list | `[]` |  |
+| uiServerUrl | string | `"https://app.harness.io"` |  |
 | waitForInitContainer.image.digest | string | `""` |  |
 | waitForInitContainer.image.pullPolicy | string | `"IfNotPresent"` |  |
 | waitForInitContainer.image.registry | string | `"docker.io"` |  |
