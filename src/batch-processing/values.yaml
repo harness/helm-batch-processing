@@ -49,6 +49,11 @@ timescaleSecret:
     name: harness-secrets
     key: timescaledbPostgresPassword
 
+smtp:
+  host: ""
+  password: ""
+  user: ""
+
 ceBatchGCPCredentials: ""
 
 ceGCPHomeProjectCreds: ""
