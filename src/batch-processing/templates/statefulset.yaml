@@ -31,13 +31,13 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-      #ng-manager should take care of mongo & timescale
-      - name: wait-for-ng-manager
+      #nextgen-ce should take care of ng-manager, mongo & timescale
+      - name: wait-for-nextgen-ce
         image: {{ include "common.images.image" (dict "imageRoot" .Values.waitForInitContainer.image "global" .Values.global) }}
         imagePullPolicy: IfNotPresent
         args:
           - "pod"
-          - "-lapp=ng-manager"
+          - "-lapp=nextgen-ce"
       - name: wait-for-telescopes
         image: {{ include "common.images.image" (dict "imageRoot" .Values.waitForInitContainer.image "global" .Values.global) }}
         imagePullPolicy: IfNotPresent
