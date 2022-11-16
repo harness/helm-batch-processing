@@ -3,6 +3,23 @@ entries:
   batch-processing:
   - apiVersion: v2
     appVersion: 1.773.0
+    created: "2022-11-16T13:39:43.340793567Z"
+    dependencies:
+    - name: harness-common
+      repository: https://harness.github.io/helm-common
+      version: 1.x.x
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.x.x
+    description: A Helm chart for Kubernetes
+    digest: 226d1b0e9d647d5e9590e2995e594f028f17cc84db1d4235ac8c1b2709999040
+    name: batch-processing
+    type: application
+    urls:
+    - https://github.com/harness/helm-batch-processing/releases/download/batch-processing-0.1.6/batch-processing-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 1.773.0
     created: "2022-11-16T12:02:10.255438085Z"
     dependencies:
     - name: harness-common
@@ -86,4 +103,4 @@ entries:
     urls:
     - https://github.com/harness/helm-batch-processing/releases/download/batch-processing-0.1.1/batch-processing-0.1.1.tgz
     version: 0.1.1
-generated: "2022-11-16T12:02:10.255460085Z"
+generated: "2022-11-16T13:39:43.340984374Z"
