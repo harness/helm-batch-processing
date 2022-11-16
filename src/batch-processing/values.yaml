@@ -17,8 +17,7 @@ replicaCount: 2
 isolatedReplica: 2
 
 java:
-  memory: "7168m"
-  memoryLimit: "7168m"
+  memory: "7168"
 
 image:
   registry: docker.io
